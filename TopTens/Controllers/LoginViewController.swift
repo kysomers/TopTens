@@ -69,7 +69,7 @@ extension LoginViewController : FUIAuthDelegate{
             
             
             // 2
-            let userRef = Database.database().reference().child("users").child(user.uid)
+            let userRef = Database.database().reference().child(Constants.UserDefaults.key).child(user.uid)
             
             // 3
             userRef.observeSingleEvent(of: .value, with: { (snapshot) in

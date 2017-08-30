@@ -10,6 +10,8 @@ import UIKit
 
 class MyTopTensTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var dateCreatedLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

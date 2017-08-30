@@ -8,6 +8,10 @@
 
 import Foundation
 
-protocol updateTableViewDelegate{
+protocol UpdateTableViewDelegate{
     func updateTableView()
+}
+
+protocol SingleCellDeleterDelegate{
+    func deleteCellAtIndexPath(indexPath : IndexPath)
 }

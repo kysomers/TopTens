@@ -9,6 +9,9 @@ target 'TopTens' do
   pod 'FirebaseUI/Auth'
   pod 'Firebase/Database'
   pod 'Firebase/Storage'
+  pod 'FacebookCore'
+  pod 'FacebookLogin'
+  pod 'PatternView'
   # Pods for TopTens
 
 end

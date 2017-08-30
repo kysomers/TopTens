@@ -53,6 +53,20 @@
                                     <action selector="loginButtonTapped:" destination="qLE-V2-rSV" eventType="touchUpInside" id="PR0-1E-vhS"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vlM-ah-hRP">
+                                <rect key="frame" x="111" y="479" width="153" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Sign In With Facebook">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z9z-j3-CUS">
+                                <rect key="frame" x="121" y="546" width="132" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Sign in with Google">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.52567385502283837" green="0.33112884152844924" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -103,13 +117,13 @@
                                 </subviews>
                             </stackView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hg4-MN-nb8">
-                                <rect key="frame" x="66" y="205.5" width="243" height="30"/>
+                                <rect key="frame" x="66" y="225.5" width="243" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZjE-cg-Kqj">
-                                <rect key="frame" x="66" y="315.5" width="243" height="60"/>
+                                <rect key="frame" x="66" y="335.5" width="243" height="60"/>
                                 <color key="backgroundColor" red="0.52567385502283837" green="0.33112884152844924" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="cC7-xk-pcT"/>
@@ -122,10 +136,17 @@
                                     <action selector="nextButtonTapped:" destination="gh2-v6-KAk" eventType="touchUpInside" id="7S2-rr-SlB"/>
                                 </connections>
                             </button>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="That username is already taken" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rkR-O5-XCd">
+                                <rect key="frame" x="66" y="202.5" width="243" height="18"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" red="0.52635061740875244" green="0.32841241359710693" blue="0.99923413991928101" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="hg4-MN-nb8" firstAttribute="top" secondItem="B2n-Xd-tI6" secondAttribute="bottom" constant="40" id="4zG-6v-RdD"/>
+                            <constraint firstItem="hg4-MN-nb8" firstAttribute="top" secondItem="B2n-Xd-tI6" secondAttribute="bottom" constant="60" id="4zG-6v-RdD"/>
+                            <constraint firstItem="hg4-MN-nb8" firstAttribute="top" secondItem="rkR-O5-XCd" secondAttribute="bottom" constant="5" id="5h2-qv-fsO"/>
                             <constraint firstAttribute="trailingMargin" secondItem="B2n-Xd-tI6" secondAttribute="trailing" constant="50" id="GH3-Fh-z5Q"/>
                             <constraint firstItem="hg4-MN-nb8" firstAttribute="leading" secondItem="B2n-Xd-tI6" secondAttribute="leading" id="K4d-28-Ta2"/>
                             <constraint firstItem="hg4-MN-nb8" firstAttribute="trailing" secondItem="B2n-Xd-tI6" secondAttribute="trailing" id="MFo-UB-w2R"/>
@@ -133,11 +154,14 @@
                             <constraint firstItem="B2n-Xd-tI6" firstAttribute="top" secondItem="43p-f1-Qbu" secondAttribute="bottom" constant="50" id="Xsy-Pp-vuR"/>
                             <constraint firstItem="B2n-Xd-tI6" firstAttribute="leading" secondItem="3yg-SB-KcA" secondAttribute="leadingMargin" constant="50" id="cHP-FW-sG7"/>
                             <constraint firstItem="ZjE-cg-Kqj" firstAttribute="top" secondItem="hg4-MN-nb8" secondAttribute="bottom" constant="80" id="gnq-Uc-ZmR"/>
+                            <constraint firstItem="hg4-MN-nb8" firstAttribute="leading" secondItem="rkR-O5-XCd" secondAttribute="leading" id="psT-xK-wlS"/>
+                            <constraint firstItem="hg4-MN-nb8" firstAttribute="trailing" secondItem="rkR-O5-XCd" secondAttribute="trailing" id="ueP-9X-djr"/>
                             <constraint firstItem="ZjE-cg-Kqj" firstAttribute="trailing" secondItem="B2n-Xd-tI6" secondAttribute="trailing" id="vkL-nr-0JW"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="nextButton" destination="ZjE-cg-Kqj" id="y4u-Sz-aLy"/>
+                        <outlet property="takenUsernameWarningLabel" destination="rkR-O5-XCd" id="DqZ-7P-7Yc"/>
                         <outlet property="usernameTextField" destination="hg4-MN-nb8" id="VQd-CO-jGa"/>
                     </connections>
                 </viewController>

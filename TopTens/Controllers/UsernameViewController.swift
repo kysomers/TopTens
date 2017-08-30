@@ -12,6 +12,7 @@ import FirebaseDatabase
 
 class UsernameViewController: UIViewController {
 
+    @IBOutlet weak var takenUsernameWarningLabel: UILabel!
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var nextButton: UIButton!
     override func viewDidLoad() {
@@ -27,22 +28,57 @@ class UsernameViewController: UIViewController {
     
     @IBAction func nextButtonTapped(_ sender: Any) {
         
-        guard let currentUser = Auth.auth().currentUser, let username = usernameTextField.text, !username.isEmpty else {return}
-        UserService.create(currentUser, username: username, completion: {(user) in
-            guard let _ = user else { return }
-            
-            let storyboard = UIStoryboard(name: "Main", bundle: .main)
-            
-            if let initialViewController = storyboard.instantiateInitialViewController() {
-                self.view.window?.rootViewController = initialViewController
-                self.view.window?.makeKeyAndVisible()
+        UserService.checkIfUsernameExists(username: usernameTextField.text!, exists: {exists in
+            if exists{
+                self.showUsernameErrorWithMessage(message: "That username has already been taken.")
+
+            }
+            else{
+                guard let currentUser = Auth.auth().currentUser, let username = self.usernameTextField.text else {return}
+                if username.isEmpty{
+                    self.showUsernameErrorWithMessage(message: "You gotta type something there, buddy.")
+
+
+
+                }
+                else if !username.containsOnlyLettersAndNumbers(){
+                    self.showUsernameErrorWithMessage(message: "Your username can only contain numbers and letters.")
+
+
+                }
+                else if username.characters.count > 20{
+                    self.showUsernameErrorWithMessage(message: "Your username can only have 20 characters max.")
+                }
+                else{
+                    UserService.create(currentUser, username: username, completion: {(user) in
+                        guard let user = user else { return }
+                        User.setCurrent(user)
+                        let storyboard = UIStoryboard(name: "Main", bundle: .main)
+                        
+                        if let initialViewController = storyboard.instantiateInitialViewController() {
+                            self.view.window?.rootViewController = initialViewController
+                            self.view.window?.makeKeyAndVisible()
+                        }
+                        
+                    })
+                }
+                
+                
+                
             }
         
         })
         
+        
+        
 
         
         
+    }
+    
+    func showUsernameErrorWithMessage(message : String){
+        self.takenUsernameWarningLabel.isHidden = false
+        self.takenUsernameWarningLabel.text = message
     }
 
     /*

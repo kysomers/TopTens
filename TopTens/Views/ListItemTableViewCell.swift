@@ -20,6 +20,7 @@ class ListItemTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+
         moreIndicatorView.layer.cornerRadius = moreIndicatorView.frame.width / 2
         moreIndicatorView.clipsToBounds = true
         // Initialization code

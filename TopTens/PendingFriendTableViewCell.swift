@@ -13,7 +13,7 @@ class PendingFriendTableViewCell: UITableViewCell {
     var user : User?
     var acceptRequestButtonTapped = false
     var declineRequestButtonTapped = false
-    var tableViewUpdater : updateTableViewDelegate?
+    var tableViewUpdater : UpdateTableViewDelegate?
 
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!

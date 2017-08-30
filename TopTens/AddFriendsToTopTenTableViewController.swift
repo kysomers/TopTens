@@ -10,8 +10,16 @@ import UIKit
 
 class AddFriendsToTopTenTableViewController: UITableViewController {
 
+    var topTenPost : TopTenPost?
+    var alreadyAdded = [User]()
+    var unaddedFriends = [User]()
+    var newlyAdded = [User]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.redoSocialArrays), name: NSNotification.Name(rawValue: Constants.Notifications.fetchedUsersForPost), object: nil)
+
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -19,77 +27,132 @@ class AddFriendsToTopTenTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        redoSocialArrays()
+    }
+    
+    func redoSocialArrays(){
+        guard let topTenPost = topTenPost else {return}
+        
+        alreadyAdded = []
+        unaddedFriends = []
+        
+        for aUser in User.current.friends{
+            
+            if aUser.uid == User.current.uid{
+                continue
+            }
+            if topTenPost.allUsersForPost.contains(where:{$0.uid == aUser.uid}){
+                alreadyAdded.append(aUser)
+            }
+            else{
+                unaddedFriends.append(aUser)
+            }
+        }
+        tableView.reloadData()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    @IBAction func doneButtonTapped(_ sender: Any) {
+        //Add users in newlyAdded to existing top ten post
+        guard let topTenPost = topTenPost else{self.dismiss(animated: true, completion: nil) ; return}
+        
+        TopTenPostService.addUsersToExistingTopTenPost(users: newlyAdded, topTenPost: topTenPost, success: {succeeded in
+            if succeeded{
+                for aUser in self.newlyAdded{
+                    topTenPost.allUsersForPost.append(aUser)
+                }
+            }
+            
+            self.dismiss(animated: true, completion: nil)
+            
+            
+            
+        
+        })
+        
+        
+        //Don't do this here, but don't forget to do it in the callback
+        //topTenPost.usersUIDs.append(aUser.uid)
+        
     }
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        if section == 0{
+            return unaddedFriends.count
+        }
+        else{
+            return alreadyAdded.count
+        }
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath) as! FriendTableViewCell
+        
+        if indexPath.section == 0{
+            let curUser = unaddedFriends[indexPath.row]
+            cell.nameLabel.text = curUser.fullName
+            cell.usernameLabel.text = curUser.stylizedUsername
+            if newlyAdded.contains(curUser){
+                cell.addedImageView.isHidden = false
 
-        // Configure the cell...
+            }
+            else{
+                cell.addedImageView.isHidden = true
+            }
+            setCellElementsToColor(cell: cell, color: .black)
+            
+        }
+        else{
+            let curUser = alreadyAdded[indexPath.row]
+            cell.nameLabel.text = curUser.fullName
+            cell.usernameLabel.text = curUser.stylizedUsername
+            cell.addedImageView.isHidden = false
+            setCellElementsToColor(cell: cell, color: .gray)
+
+
+        }
 
         return cell
     }
-    */
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+        if indexPath.section == 0{
+            let curUser = unaddedFriends[indexPath.row]
+            if newlyAdded.contains(curUser){
+                newlyAdded.remove(at: newlyAdded.index(of: curUser)!)
+            }
+            else{
+                newlyAdded.append(curUser)
+            }
+        }
+        tableView.reloadData()
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+    
+    func setCellElementsToColor(cell : FriendTableViewCell,color : UIColor){
+        cell.nameLabel.textColor = color
+        cell.usernameLabel.textColor = color
+        cell.addedImageView.tintColor = color
+        cell.addedImageView.image = cell.addedImageView.image?.withRenderingMode(.alwaysTemplate)
 
     }
-    */
+    
 
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

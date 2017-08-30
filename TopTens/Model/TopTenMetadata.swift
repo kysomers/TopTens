@@ -11,7 +11,7 @@ import FirebaseDatabase
 
 final class TopTenMetadata{
     
-    var creatorUID : String
+    var ownerUID : String
     var uid : String
     var title : String
     var dateCreated : Date
@@ -19,6 +19,7 @@ final class TopTenMetadata{
     var users = [User]()
     var votingType : String
     var creatorUsername : String
+    var isShared = false
     //add genre
 
     
@@ -26,11 +27,12 @@ final class TopTenMetadata{
     init?(snapshot: DataSnapshot) {
         guard let dict = snapshot.value as? [String : Any],
             let title = dict[Constants.TopTenPostMetadata.title] as? String,
-            let creatorUID = dict[Constants.TopTenPostMetadata.creatorUID] as? String,
+            let ownerUID = dict[Constants.TopTenPostMetadata.ownerUID] as? String,
             let dateCreated = dict[Constants.TopTenPostMetadata.dateCreated] as? TimeInterval,
             let dateModified = dict[Constants.TopTenPostMetadata.dateModified] as? TimeInterval,
             let votingType = dict[Constants.TopTenPostMetadata.votingType] as? String,
-            let creatorUsername = dict[Constants.TopTenPostMetadata.creatorUsername] as? String
+            let creatorUsername = dict[Constants.TopTenPostMetadata.creatorUsername] as? String,
+            let isShared = dict[Constants.TopTenPostMetadata.isShared] as? Bool
 
 
             else {
@@ -39,11 +41,12 @@ final class TopTenMetadata{
         
         self.uid = snapshot.key
         self.title = title
-        self.creatorUID = creatorUID
+        self.ownerUID = ownerUID
         self.dateCreated = Date(timeIntervalSince1970: dateCreated)
         self.dateModified = Date(timeIntervalSince1970: dateModified)
         self.votingType = votingType
         self.creatorUsername = creatorUsername
+        self.isShared = isShared
         
     }
     

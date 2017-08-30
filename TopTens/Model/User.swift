@@ -65,10 +65,12 @@ final class User : NSObject {
         super.init()
     }
     
+
+    
     init?(dict : [String : Any], uid : String){
-        guard let username = dict["username"] as? String,
-            let stylizedUsername = dict["stylizedUsername"] as? String,
-            let fullName = dict["fullName"] as? String
+        guard let username = dict[Constants.UserDefaults.username] as? String,
+            let stylizedUsername = dict[Constants.UserDefaults.stylizedUsername] as? String,
+            let fullName = dict[Constants.UserDefaults.fullName] as? String
 
             else{
                 return nil
@@ -81,8 +83,8 @@ final class User : NSObject {
         
         super.init()
         
-        self.friends = UserService.getUserArrayOutOfDict(userArray: dict["friends"])
-        self.sentRequests = UserService.getUserArrayOutOfDict(userArray: dict["sentRequests"])
+        self.friends = UserService.getUserArrayOutOfDict(userArray: dict[Constants.UserDefaults.friends])
+        self.sentRequests = UserService.getUserArrayOutOfDict(userArray: dict[Constants.UserDefaults.sentRequests])
         self.receivedRequests = UserService.getUserArrayOutOfDict(userArray: dict[Constants.UserDefaults.receivedRequests])
 
 
@@ -92,9 +94,9 @@ final class User : NSObject {
     
     init?(snapshot: DataSnapshot) {
         guard let dict = snapshot.value as? [String : Any],
-            let username = dict["username"] as? String,
-            let stylizedUsername = dict["stylizedUsername"] as? String,
-            let fullName = dict["fullName"] as? String
+            let username = dict[Constants.UserDefaults.username] as? String,
+            let stylizedUsername = dict[Constants.UserDefaults.stylizedUsername] as? String,
+            let fullName = dict[Constants.UserDefaults.fullName] as? String
             
             else {
                 
@@ -106,8 +108,8 @@ final class User : NSObject {
         self.fullName = fullName
         super.init()
         
-        self.friends = UserService.getUserArrayOutOfDict(userArray: dict["friends"])
-        self.sentRequests = UserService.getUserArrayOutOfDict(userArray: dict["sentRequests"])
+        self.friends = UserService.getUserArrayOutOfDict(userArray: dict[Constants.UserDefaults.friends])
+        self.sentRequests = UserService.getUserArrayOutOfDict(userArray: dict[Constants.UserDefaults.sentRequests])
         self.receivedRequests = UserService.getUserArrayOutOfDict(userArray: dict[Constants.UserDefaults.receivedRequests])
 
 

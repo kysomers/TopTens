@@ -94,5 +94,53 @@ struct FriendService{
         })
     }
     
+    static func findUsersWithUsernamesStartingWith(lowercaseSearchText : String, completion : @escaping ([User]?) -> Void){
+        let ref = Database.database().reference().child(Constants.UserDefaults.key)
+        ref.queryOrdered(byChild: Constants.UserDefaults.username).queryLimited(toFirst: 20).queryStarting(atValue: lowercaseSearchText).queryEnding(atValue: lowercaseSearchText + "\u{f8ff}").observeSingleEvent(of: .value, with: {(snapshot) in
+            
+            var displayedStrangers = [User]()
+            
+            displayedStrangers = []
+            
+            
+            guard let snapshotDict = snapshot.value as? [String : Any]
+                else{ completion(nil)
+                    return
+            }
+            
+            var counter = 0
+            for (uid, aUserDict) in snapshotDict{
+                if let aUserDict = aUserDict as? [String : Any], let newUser = User(dict: aUserDict, uid: uid) {
+                    
+                    var userFoundInAnotherSocialArray = false
+                    for aUser in User.current.friends + User.current.receivedRequests{
+                        if aUser.username == newUser.username{
+                            userFoundInAnotherSocialArray = true
+                            break
+                        }
+                    }
+                    
+                    if newUser.username != User.current.username &&
+                        !userFoundInAnotherSocialArray{
+                        
+                        displayedStrangers.append(newUser)
+                        
+                        counter += 1
+                        if counter == 10{
+                            break
+                        }
+                        
+                    }
+                    
+                }
+            }
+            completion(displayedStrangers)
+            
+            
+            
+        })
+
+    }
+    
     
 }

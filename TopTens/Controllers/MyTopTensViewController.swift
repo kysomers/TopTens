@@ -21,26 +21,51 @@ class MyTopTensViewController: UIViewController {
 
     
     @IBOutlet weak var tableView: UITableView!
-    
+    let refreshControl = UIRefreshControl()
+
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        
         tableView.delegate = self
         tableView.dataSource = self
         
+        
+        
+        refreshControl.addTarget(self, action: #selector(reloadTopTens), for: .valueChanged)
+        tableView.addSubview(refreshControl)
+
+    }
+    
+    func reloadTopTens() {
+
+        
         TopTenPostService.fetchMetadataForUser(User.current, completion: {(topTenMetadatas) in
             self.myTopTens = topTenMetadatas
-            print(self.myTopTens)
+            if self.refreshControl.isRefreshing {
+                self.refreshControl.endRefreshing()
+            }
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
         })
+        
 
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        TopTenPostService.fetchMetadataForUser(User.current, completion: {(topTenMetadatas) in
+            self.myTopTens = topTenMetadatas
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        })
+        
         if let indexPath = tableView.indexPathForSelectedRow{
             tableView.deselectRow(at: indexPath, animated: false)
         }
@@ -60,19 +85,22 @@ class MyTopTensViewController: UIViewController {
             let metadata = myTopTens[row]
             nextVC.topTenMetadata = metadata
             
-            TopTenPostService.fetchListItems(from: metadata, completion: {(listItems) in
+            TopTenPostService.fetchListItemsAndUIDsForUser(user: User.current, from: metadata, completion: {(listItems) in
                 
-                if let listItems = listItems{
-                    let sortedListItems = listItems.sorted(by: {$0.position < $1.position})
-                    nextVC.topTenPost = TopTenPost(listItems: sortedListItems, metadata: metadata)
-                }
-                else{
-                    nextVC.topTenPost = TopTenPost(listItems: [], metadata: metadata)
-                }
+                let sortedListItems = listItems.sorted(by: {$0.position < $1.position})
+                let newPost = TopTenPost(listItems: sortedListItems, metadata: metadata)
+                nextVC.topTenPost = newPost
+                
+                TopTenPostService.fetchUsersForTopTenPostAndPostNotification(topTenPost: newPost, completion: {(users) in
+                    newPost.allUsersForPost = users
+                
+                })
+                
+               
             
             })
             
-//            let ref = Database.database().reference().child(Constants.TopTenPost.key).child(metadata.creatorUID).child(metadata.uid)
+//            let ref = Database.database().reference().child(Constants.TopTenPost.key).child(metadata.ownerUID).child(metadata.uid)
 //            ref.observe(.value, with: {(snapshot) in
 //                
 //                    
@@ -117,13 +145,26 @@ class MyTopTensViewController: UIViewController {
 
 extension MyTopTensViewController : UITableViewDelegate, UITableViewDataSource{
     
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return myTopTens.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: "TopTenCell", for: indexPath)
-        cell.textLabel?.text = myTopTens[indexPath.row].title
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "TopTenCell", for: indexPath) as! MyTopTensTableViewCell
+        
+        let currentTopTen = myTopTens[indexPath.row]
+        cell.titleLabel.text = currentTopTen.title
+        
+        if currentTopTen.ownerUID != User.current.uid{
+            cell.dateCreatedLabel.text = "Created by " + currentTopTen.creatorUsername
+
+        }
+        else{
+            cell.dateCreatedLabel.text = "Created on " + currentTopTen.dateCreated.toString()
+
+        }
         
         
         

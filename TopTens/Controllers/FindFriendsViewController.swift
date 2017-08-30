@@ -28,6 +28,9 @@ class FindFriendsViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
+        searchBar.returnKeyType = .done
+        searchBar.enablesReturnKeyAutomatically = false
+        
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateTableView), name: NSNotification.Name(rawValue: Constants.Notifications.refreshedSocialArray), object: nil)
 
         
@@ -52,64 +55,36 @@ extension FindFriendsViewController : UISearchBarDelegate{
             tableView.reloadData()
             return
         }
+
         
-        
-        
-        
-        //This chunk should perhaps be moved to the service layer. It's used to find people given the search string isn't empty
         let lowercaseSearchText = searchText.lowercased()
         
-        let ref = Database.database().reference().child("users")
-        ref.queryOrdered(byChild: "username").queryLimited(toFirst: 20).queryStarting(atValue: lowercaseSearchText).queryEnding(atValue: lowercaseSearchText + "\u{f8ff}").observeSingleEvent(of: .value, with: {(snapshot) in
-            
-            self.displayedStrangers = []
-
-            
-            guard let snapshotDict = snapshot.value as? [String : Any]
-                else{ self.tableView.reloadData()
-                    return
+        FriendService.findUsersWithUsernamesStartingWith(lowercaseSearchText: lowercaseSearchText, completion: {(users) in
+        
+            if let users = users{
+                self.displayedStrangers = users
+                
+            }
+            else{
+                self.displayedStrangers = []
             }
             
-            var counter = 0
-            for (uid, aUserDict) in snapshotDict{
-                if let aUserDict = aUserDict as? [String : Any], let newUser = User(dict: aUserDict, uid: uid) {
-                    
-                    if newUser.username != User.current.username &&
-                        !User.current.friends.contains(newUser) &&
-                        !User.current.receivedRequests.contains(newUser){
-                        
-                        self.displayedStrangers.append(newUser)
-                        
-                        counter += 1
-                        if counter == 10{
-                            break
-                        }
-
-                    }
-                    
-                }
-            }
-            self.isShowingFriends = false
             DispatchQueue.main.async {
+                self.isShowingFriends = false
                 self.tableView.reloadData()
             }
-            
-            
-        })
         
-
+        })
     }
     
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//
-//    }
-    
-    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
 }
 
 
 
-extension FindFriendsViewController : UITableViewDelegate, UITableViewDataSource, updateTableViewDelegate{
+extension FindFriendsViewController : UITableViewDelegate, UITableViewDataSource, UpdateTableViewDelegate, SingleCellDeleterDelegate{
     
     func numberOfSections(in tableView: UITableView) -> Int {
         receivedRequests = User.current.receivedRequests
@@ -131,7 +106,12 @@ extension FindFriendsViewController : UITableViewDelegate, UITableViewDataSource
                 return receivedRequests.count
             }
             else{
-                return friends.count
+                if receivedRequests.count > 0{
+                    return friends.count
+                }
+                else{
+                    return friends.count == 0 ? 1 : friends.count
+                }
             }
         }
         else{
@@ -149,19 +129,45 @@ extension FindFriendsViewController : UITableViewDelegate, UITableViewDataSource
                 cell.nameLabel.text = receivedRequests[indexPath.row].fullName
                 cell.tableViewUpdater = self
                 cell.user = receivedRequests[indexPath.row]
+                cell.selectionStyle = .none
+
                 return cell
             }
             else{
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constants.CellIdentifiers.friendCell, for: indexPath) as! FriendTableViewCell
-                cell.nameLabel.text = friends[indexPath.row].fullName
+                if friends.count != 0{
+                    let cell = tableView.dequeueReusableCell(withIdentifier: Constants.CellIdentifiers.friendCell, for: indexPath) as! FriendTableViewCell
+                    cell.nameLabel.text = friends[indexPath.row].fullName
+                    cell.usernameLabel.text = friends[indexPath.row].stylizedUsername
+                    cell.selectionStyle = .none
+                    
+                    
+                    return cell
+                }
+                else{
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "NoFriendsCell", for: indexPath)
+                    return cell
+                }
                 
-                return cell
+                
             }
         }
         else{
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.CellIdentifiers.strangerCell, for: indexPath) as! StrangerTableViewCell
-            cell.nameLabel.text = displayedStrangers[indexPath.row].stylizedUsername
-            cell.user = displayedStrangers[indexPath.row]
+            let curUser = displayedStrangers[indexPath.row]
+            cell.nameLabel.text = curUser.fullName
+            cell.user = curUser
+            cell.usernameLabel.text = curUser.username
+            cell.selectionStyle = .none
+            cell.deleterDelegate = self
+            cell.indexPath = indexPath
+            
+            if User.current.sentRequests.contains(where: {return $0.username == curUser.username}){
+                cell.markRequested(name: curUser.username)
+            }
+            else{
+                cell.markUnrequested()
+            }
+            
             
             
             
@@ -172,5 +178,13 @@ extension FindFriendsViewController : UITableViewDelegate, UITableViewDataSource
     
     func updateTableView() {
         self.tableView.reloadData()
+    }
+    
+    func deleteCellAtIndexPath(indexPath: IndexPath) {
+        tableView.beginUpdates()
+        tableView.deleteRows(at: [indexPath], with: .fade)
+        displayedStrangers.remove(at: indexPath.row)
+
+        tableView.endUpdates()
     }
 }

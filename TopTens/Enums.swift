@@ -13,6 +13,9 @@ struct Constants{
     
     struct Segues{
         static let toCreateUsername = "toCreateUsername"
+        static let toListItemDetailSegue = "toListItemDetailSegue"
+        static let toSeeFriendsTopTenTableViewControllerSegue = "toSeeFriendsTopTenTableViewControllerSegue"
+        static let toAddFriendsTableViewControllerSegue = "toAddFriendsTableViewControllerSegue"
     }
     
     struct CellIdentifiers{
@@ -27,6 +30,7 @@ struct Constants{
     
     struct Notifications{
         static let refreshedSocialArray = "refreshedSocialArray"
+        static let fetchedUsersForPost = "fetchedUsersForPost"
     }
     
     struct UserDefaults {
@@ -48,6 +52,11 @@ struct Constants{
         
     }
     
+    struct TopTenShared{
+        static let key = "TopTenShared"
+        static let deleted = "deleted"
+    }
+    
     struct TopTenPostMetadata{
         
         static let key = "TopTenPostMetadata"
@@ -55,8 +64,9 @@ struct Constants{
         static let dateCreated = "dateCreated"
         static let dateModified = "dateModified"
         static let votingType = "votingType"
-        static let creatorUID = "creatorUID"
+        static let ownerUID = "ownerUID"
         static let creatorUsername = "creatorUsername"
+        static let isShared = "isShared"
         
     }
     
@@ -64,11 +74,18 @@ struct Constants{
         static let title = "title"
         static let votes = "votes"
         static let position = "position"
-        static let isSortingManual = "isSortingManual"
-        static let creatorUID = "creatorUID"
+        static let ownerUID = "ownerUID"
         static let creatorUsername = "creatorUsername"
         static let dateCreated = "dateCreated"
+        static let detailsString = "detailsString"
 
+    }
+    
+    struct PostUsers{
+        static let key = "PostUsers"
+        static let fullname = UserDefaults.fullName
+        static let username = UserDefaults.username
+        static let stylizedUsername = UserDefaults.stylizedUsername
     }
 }
 

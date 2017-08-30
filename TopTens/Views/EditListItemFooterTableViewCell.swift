@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EditListItemFooterTableViewCell: UITableViewCell {
+class ListItemFooterTableViewCell: UITableViewCell {
 
     @IBOutlet weak var userLabel: UILabel!
     @IBOutlet weak var doubleUpvoteButton: UIButton!

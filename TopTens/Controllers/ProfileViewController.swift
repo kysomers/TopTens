@@ -11,10 +11,18 @@ import  FirebaseAuth
 
 class ProfileViewController: UIViewController {
 
+    @IBOutlet weak var doneButton: UIButton!
+    @IBOutlet weak var fullNameLabel: UILabel!
+    @IBOutlet weak var logOutButton: UIButton!
     
+    @IBOutlet weak var editNameButton: UIButton!
+    @IBOutlet weak var editNameTextField: UITextField!
+    @IBOutlet weak var usernameLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        fullNameLabel.text = User.current.fullName
+        usernameLabel.text = User.current.username
        
         
         
@@ -27,6 +35,36 @@ class ProfileViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func doneButtonTapped(_ sender: Any) {
+        if let text = editNameTextField.text, text != ""{
+            UserService.changeCurrentUserFullname(to: text, succeeded: {succeeded in
+            
+                if succeeded{
+                    User.current.fullName = text
+                    User.setCurrent(User.current)
+                    DispatchQueue.main.async {
+                        self.fullNameLabel.text = text
+                    }
+                }
+            
+            })
+            editNameButton.isHidden = false
+            logOutButton.isHidden = false
+            editNameTextField.isHidden = true
+            doneButton.isHidden = true
+            editNameTextField.resignFirstResponder()
+            
+            
+        }
+    }
+    @IBAction func editNameTapped(_ sender: Any) {
+        editNameButton.isHidden = true
+        logOutButton.isHidden = true
+        editNameTextField.isHidden = false
+        doneButton.isHidden = false
+        editNameTextField.text = User.current.fullName
+        
+    }
     @IBAction func logOutTapped(_ sender: Any) {
         
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -39,6 +77,7 @@ class ProfileViewController: UIViewController {
             }
             let appDomain = Bundle.main.bundleIdentifier!
             UserDefaults.standard.removePersistentDomain(forName: appDomain)
+            
             let loginViewController = UIStoryboard.initialViewController(for: "Login")
             self.view.window?.rootViewController = loginViewController
             self.view.window?.makeKeyAndVisible()
