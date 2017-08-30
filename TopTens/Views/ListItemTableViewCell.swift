@@ -8,8 +8,9 @@
 
 import UIKit
 
-class EditListItemTableViewCell: UITableViewCell {
+class ListItemTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var moreIndicatorView: UIView!
     @IBOutlet weak var contentLabel: UILabel!
     @IBOutlet weak var numberLabel: UILabel!
     @IBOutlet weak var userLabel: UILabel!
@@ -19,6 +20,8 @@ class EditListItemTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        moreIndicatorView.layer.cornerRadius = moreIndicatorView.frame.width / 2
+        moreIndicatorView.clipsToBounds = true
         // Initialization code
     }
 
