@@ -63,9 +63,10 @@ class AddFriendsToTopTenTableViewController: UITableViewController {
         
         TopTenPostService.addUsersToExistingTopTenPost(users: newlyAdded, topTenPost: topTenPost, success: {succeeded in
             if succeeded{
-                for aUser in self.newlyAdded{
-                    topTenPost.allUsersForPost.append(aUser)
-                }
+                TopTenPostService.fetchUsersForTopTenPostAndPostNotification(topTenPost: topTenPost, completion: {(users) in
+                    topTenPost.allUsersForPost = users
+                    
+                })
             }
             
             self.dismiss(animated: true, completion: nil)

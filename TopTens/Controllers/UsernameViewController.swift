@@ -12,12 +12,19 @@ import FirebaseDatabase
 
 class UsernameViewController: UIViewController {
 
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var movingView: UIView!
     @IBOutlet weak var takenUsernameWarningLabel: UILabel!
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var nextButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        navigationItem.hidesBackButton = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        tap.delegate = self
+        self.view.addGestureRecognizer(tap)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         // Do any additional setup after loading the view.
     }
 
@@ -49,10 +56,13 @@ class UsernameViewController: UIViewController {
                 else if username.characters.count > 20{
                     self.showUsernameErrorWithMessage(message: "Your username can only have 20 characters max.")
                 }
+                else if username.characters.count < 6{
+                    self.showUsernameErrorWithMessage(message: "Your username must have at least 6 characters.")
+                }
                 else{
                     UserService.create(currentUser, username: username, completion: {(user) in
                         guard let user = user else { return }
-                        User.setCurrent(user)
+                        User.setCurrent(user, writeToUserDefaults: true)
                         let storyboard = UIStoryboard(name: "Main", bundle: .main)
                         
                         if let initialViewController = storyboard.instantiateInitialViewController() {
@@ -81,14 +91,42 @@ class UsernameViewController: UIViewController {
         self.takenUsernameWarningLabel.text = message
     }
 
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+
+}
+
+extension UsernameViewController : UIGestureRecognizerDelegate {
+    
+    
+    
+    func handleTap(_ gestureRecognizer : UIGestureRecognizer){
+        
+        usernameTextField.resignFirstResponder()
+        self.scrollView.setContentOffset(CGPoint(x:0, y:0), animated: true)
+
+        
     }
-    */
+    @IBAction func takeDownTheKeyboard(_ sender: Any) {
+        print("keyboard retired")
+        self.scrollView.setContentOffset(CGPoint(x:0, y:0), animated: true)
 
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        
+        
+        guard let usernameRect = usernameTextField.superview?.convert(usernameTextField.frame, to: movingView) else{print("weird error"); return}
+        
+        if let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue{
+            
+            if self.view.frame.height - keyboardFrame.height < usernameRect.maxY {
+                
+                
+
+                self.scrollView.setContentOffset(CGPoint(x: 0, y:  usernameRect.origin.y - 60), animated: true)
+            }
+        }
+        // do stuff with the frame...
+    }
+    
 }

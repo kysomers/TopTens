@@ -12,6 +12,9 @@ target 'TopTens' do
   pod 'FacebookCore'
   pod 'FacebookLogin'
   pod 'PatternView'
+  pod 'FirebaseUI/Facebook'
+  pod 'GoogleSignIn'
+  pod 'FirebaseUI/Google'
   # Pods for TopTens
 
 end

@@ -10,7 +10,12 @@ import Foundation
 import FirebaseAuth.FIRUser
 import FirebaseDatabase
 
+
+
 struct UserService {
+
+    private static var isUpdatingSocialArrays = false
+    private static var finishedCount = 0
     
     static func show(forUID uid: String, completion: @escaping (User?) -> Void) {
         let ref = Database.database().reference().child(Constants.UserDefaults.key).child(uid)
@@ -74,28 +79,63 @@ struct UserService {
     
     static func refreshSocialArraysForCurrentUser(){
         
-        let friendsRef = Database.database().reference().child(Constants.UserDefaults.key).child(User.current.uid).child(Constants.UserDefaults.friends)
-        friendsRef.observe(.value, with: {snapshot in
-            let dict = snapshot.value
-            User.current.friends = UserService.getUserArrayOutOfDict(userArray: dict)
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constants.Notifications.refreshedSocialArray), object: nil)
-
+        if !isUpdatingSocialArrays{
             
-        })
-        let receivedRef = Database.database().reference().child(Constants.UserDefaults.key).child(User.current.uid).child(Constants.UserDefaults.receivedRequests)
-        receivedRef.observe(.value, with: {snapshot in
-            let dict = snapshot.value
-            User.current.receivedRequests = UserService.getUserArrayOutOfDict(userArray: dict)
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constants.Notifications.refreshedSocialArray), object: nil)
+            isUpdatingSocialArrays = true
+            
+            let friendsRef = Database.database().reference().child(Constants.UserDefaults.key).child(User.current.uid).child(Constants.UserDefaults.friends)
+            friendsRef.observe(.value, with: {snapshot in
+                let dict = snapshot.value
+                User.current.friends = UserService.getUserArrayOutOfDict(userArray: dict)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constants.Notifications.refreshedSocialArray), object: nil)
+                
+                //should never be great than, but just in case i'll put it
+                if finishedCount >= 2{
+                    finishedCount = 0
 
-        })
-        let sentRef = Database.database().reference().child(Constants.UserDefaults.key).child(User.current.uid).child(Constants.UserDefaults.sentRequests)
-        sentRef.observe(.value, with: {snapshot in
-            let dict = snapshot.value
-            User.current.sentRequests = UserService.getUserArrayOutOfDict(userArray: dict)
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constants.Notifications.refreshedSocialArray), object: nil)
+                    isUpdatingSocialArrays = false
+                }
+                else{
+                    finishedCount += 1
+                }
+                
+                
+            })
+            let receivedRef = Database.database().reference().child(Constants.UserDefaults.key).child(User.current.uid).child(Constants.UserDefaults.receivedRequests)
+            receivedRef.observe(.value, with: {snapshot in
+                let dict = snapshot.value
+                User.current.receivedRequests = UserService.getUserArrayOutOfDict(userArray: dict)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constants.Notifications.refreshedSocialArray), object: nil)
+                
+                if finishedCount >= 2{
+                    finishedCount = 0
 
-        })
+                    isUpdatingSocialArrays = false
+                }
+                else{
+                    finishedCount += 1
+                }
+                
+            })
+            let sentRef = Database.database().reference().child(Constants.UserDefaults.key).child(User.current.uid).child(Constants.UserDefaults.sentRequests)
+            sentRef.observe(.value, with: {snapshot in
+                let dict = snapshot.value
+                User.current.sentRequests = UserService.getUserArrayOutOfDict(userArray: dict)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constants.Notifications.refreshedSocialArray), object: nil)
+                
+                if finishedCount >= 2{
+                    finishedCount = 0
+
+                    isUpdatingSocialArrays = false
+                }
+                else{
+                    finishedCount += 1
+                }
+                
+            })
+        }
+        
+        
         
     }
     

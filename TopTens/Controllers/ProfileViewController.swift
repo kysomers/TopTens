@@ -23,6 +23,9 @@ class ProfileViewController: UIViewController {
         
         fullNameLabel.text = User.current.fullName
         usernameLabel.text = User.current.username
+        navigationController?.navigationBar.barTintColor = UIColor.appPurple
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
        
         
         

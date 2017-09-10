@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		1CAC7F451350DAE00A2615D3 /* Pods_TopTens.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4EC1E8B995FBFA6A8EDDAA9 /* Pods_TopTens.framework */; };
+		8317DD561F58DD8E00EEEF71 /* SignInToEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317DD551F58DD8E00EEEF71 /* SignInToEmailViewController.swift */; };
+		8317DD581F58DD9D00EEEF71 /* NewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317DD571F58DD9D00EEEF71 /* NewAccountViewController.swift */; };
+		8317DD5A1F58DDB100EEEF71 /* ValidationEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317DD591F58DDB100EEEF71 /* ValidationEmailViewController.swift */; };
+		8317DD5C1F5E31A500EEEF71 /* AddPersonIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8317DD5B1F5E31A500EEEF71 /* AddPersonIcon.png */; };
+		8317DD5E1F5E419600EEEF71 /* XICon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8317DD5D1F5E419600EEEF71 /* XICon.png */; };
+		8317DD601F5E419C00EEEF71 /* PlusIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8317DD5F1F5E419C00EEEF71 /* PlusIcon.png */; };
 		832411861F19B009008EC8B8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832411851F19B009008EC8B8 /* AppDelegate.swift */; };
 		8324118D1F19B009008EC8B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8324118C1F19B009008EC8B8 /* Assets.xcassets */; };
 		832411981F1AE1F7008EC8B8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832411971F1AE1F7008EC8B8 /* Extensions.swift */; };
@@ -24,7 +30,6 @@
 		8392E85B1F264741003486F8 /* DisplayTopTenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8392E85A1F264741003486F8 /* DisplayTopTenViewController.swift */; };
 		8392E8991F2A36E0003486F8 /* ListItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8392E8981F2A36E0003486F8 /* ListItemTableViewCell.swift */; };
 		8392E89B1F2A3EA0003486F8 /* EditListItemFooterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8392E89A1F2A3EA0003486F8 /* EditListItemFooterTableViewCell.swift */; };
-		839E08B11F340A6000F914EC /* icons8-Contacts-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 839E08AE1F340A6000F914EC /* icons8-Contacts-100.png */; };
 		839E08B21F340A6000F914EC /* icons8-Friends-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 839E08AF1F340A6000F914EC /* icons8-Friends-100.png */; };
 		839E08D41F38B55800F914EC /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E08D31F38B55800F914EC /* ProfileViewController.swift */; };
 		839E08D61F38BC6F00F914EC /* FindFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E08D51F38BC6F00F914EC /* FindFriendsViewController.swift */; };
@@ -49,6 +54,12 @@
 /* Begin PBXFileReference section */
 		5A9B4FA1D0348BA09B83D43D /* Pods-TopTens.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TopTens.release.xcconfig"; path = "Pods/Target Support Files/Pods-TopTens/Pods-TopTens.release.xcconfig"; sourceTree = "<group>"; };
 		5AB51DE09595AE7A6A2E16C9 /* Pods-TopTens.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TopTens.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TopTens/Pods-TopTens.debug.xcconfig"; sourceTree = "<group>"; };
+		8317DD551F58DD8E00EEEF71 /* SignInToEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SignInToEmailViewController.swift; path = Controllers/SignInToEmailViewController.swift; sourceTree = "<group>"; };
+		8317DD571F58DD9D00EEEF71 /* NewAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewAccountViewController.swift; path = Controllers/NewAccountViewController.swift; sourceTree = "<group>"; };
+		8317DD591F58DDB100EEEF71 /* ValidationEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ValidationEmailViewController.swift; path = Controllers/ValidationEmailViewController.swift; sourceTree = "<group>"; };
+		8317DD5B1F5E31A500EEEF71 /* AddPersonIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AddPersonIcon.png; sourceTree = "<group>"; };
+		8317DD5D1F5E419600EEEF71 /* XICon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = XICon.png; sourceTree = "<group>"; };
+		8317DD5F1F5E419C00EEEF71 /* PlusIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlusIcon.png; sourceTree = "<group>"; };
 		832411821F19B009008EC8B8 /* TopTens.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TopTens.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		832411851F19B009008EC8B8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8324118C1F19B009008EC8B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -66,7 +77,6 @@
 		8392E85A1F264741003486F8 /* DisplayTopTenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DisplayTopTenViewController.swift; path = Controllers/DisplayTopTenViewController.swift; sourceTree = "<group>"; };
 		8392E8981F2A36E0003486F8 /* ListItemTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListItemTableViewCell.swift; path = Views/ListItemTableViewCell.swift; sourceTree = "<group>"; };
 		8392E89A1F2A3EA0003486F8 /* EditListItemFooterTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditListItemFooterTableViewCell.swift; path = Views/EditListItemFooterTableViewCell.swift; sourceTree = "<group>"; };
-		839E08AE1F340A6000F914EC /* icons8-Contacts-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-Contacts-100.png"; sourceTree = "<group>"; };
 		839E08AF1F340A6000F914EC /* icons8-Friends-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-Friends-100.png"; sourceTree = "<group>"; };
 		839E08D31F38B55800F914EC /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileViewController.swift; path = Controllers/ProfileViewController.swift; sourceTree = "<group>"; };
 		839E08D51F38BC6F00F914EC /* FindFriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FindFriendsViewController.swift; path = Controllers/FindFriendsViewController.swift; sourceTree = "<group>"; };
@@ -169,7 +179,9 @@
 				832411A61F1AE2DC008EC8B8 /* Info.plist */,
 				83F008651F1D6FCB004CA0E6 /* GoogleService-Info.plist */,
 				83C1E0E31F465AB300F098F3 /* icons8-Checkmark-100.png */,
-				839E08AE1F340A6000F914EC /* icons8-Contacts-100.png */,
+				8317DD5B1F5E31A500EEEF71 /* AddPersonIcon.png */,
+				8317DD5D1F5E419600EEEF71 /* XICon.png */,
+				8317DD5F1F5E419C00EEEF71 /* PlusIcon.png */,
 				839E08AF1F340A6000F914EC /* icons8-Friends-100.png */,
 			);
 			name = Supporting;
@@ -220,6 +232,9 @@
 			isa = PBXGroup;
 			children = (
 				83F008631F1C71D2004CA0E6 /* LoginViewController.swift */,
+				8317DD551F58DD8E00EEEF71 /* SignInToEmailViewController.swift */,
+				8317DD571F58DD9D00EEEF71 /* NewAccountViewController.swift */,
+				8317DD591F58DDB100EEEF71 /* ValidationEmailViewController.swift */,
 				83F008691F1E5765004CA0E6 /* UsernameViewController.swift */,
 			);
 			name = Login;
@@ -338,12 +353,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				839E08B11F340A6000F914EC /* icons8-Contacts-100.png in Resources */,
 				832411A71F1AE2DC008EC8B8 /* Info.plist in Resources */,
+				8317DD5E1F5E419600EEEF71 /* XICon.png in Resources */,
 				832411A51F1AE29D008EC8B8 /* Main.storyboard in Resources */,
+				8317DD5C1F5E31A500EEEF71 /* AddPersonIcon.png in Resources */,
 				832411AB1F1AEEAE008EC8B8 /* Login.storyboard in Resources */,
 				83C1E0E41F465AB300F098F3 /* icons8-Checkmark-100.png in Resources */,
 				839E08B21F340A6000F914EC /* icons8-Friends-100.png in Resources */,
+				8317DD601F5E419C00EEEF71 /* PlusIcon.png in Resources */,
 				8324118D1F19B009008EC8B8 /* Assets.xcassets in Resources */,
 				832411A41F1AE29D008EC8B8 /* LaunchScreen.storyboard in Resources */,
 				83F008661F1D6FCB004CA0E6 /* GoogleService-Info.plist in Resources */,
@@ -408,6 +425,7 @@
 				833B7EA81F21422500D1AD2B /* ListItem.swift in Sources */,
 				839E08E01F3ACB5400F914EC /* Protocols.swift in Sources */,
 				83C1E0DC1F438F1B00F098F3 /* ListItemDetailViewController.swift in Sources */,
+				8317DD581F58DD9D00EEEF71 /* NewAccountViewController.swift in Sources */,
 				8392E8991F2A36E0003486F8 /* ListItemTableViewCell.swift in Sources */,
 				8392E85B1F264741003486F8 /* DisplayTopTenViewController.swift in Sources */,
 				8392E89B1F2A3EA0003486F8 /* EditListItemFooterTableViewCell.swift in Sources */,
@@ -415,6 +433,7 @@
 				839E08DD1F3A0B9F00F914EC /* StrangerTableViewCell.swift in Sources */,
 				83C1E0E01F43B07B00F098F3 /* AddFriendsToTopTenTableViewController.swift in Sources */,
 				832411981F1AE1F7008EC8B8 /* Extensions.swift in Sources */,
+				8317DD561F58DD8E00EEEF71 /* SignInToEmailViewController.swift in Sources */,
 				839E08D41F38B55800F914EC /* ProfileViewController.swift in Sources */,
 				83C1E0E21F43B0BE00F098F3 /* SeeFriendsTopTenTableViewController.swift in Sources */,
 				839E08D91F3A0B8400F914EC /* FriendTableViewCell.swift in Sources */,
@@ -429,6 +448,7 @@
 				83F0086C1F1E5DBD004CA0E6 /* Enums.swift in Sources */,
 				83F0086A1F1E5765004CA0E6 /* UsernameViewController.swift in Sources */,
 				83C1E0DE1F43B06000F098F3 /* SeeFriendsTopTensViewController.swift in Sources */,
+				8317DD5A1F58DDB100EEEF71 /* ValidationEmailViewController.swift in Sources */,
 				832411861F19B009008EC8B8 /* AppDelegate.swift in Sources */,
 				8392E8571F23E6B8003486F8 /* TopTenPostService.swift in Sources */,
 				839E08E21F3B665A00F914EC /* FriendService.swift in Sources */,

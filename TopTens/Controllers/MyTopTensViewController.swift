@@ -22,15 +22,23 @@ class MyTopTensViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     let refreshControl = UIRefreshControl()
+    
+    let setTitleAlert = UIAlertController(title: "What is the name of your new Top 10 List?", message: "", preferredStyle: .alert)
 
+    let tooManyCharactersAlert = UIAlertController(title: "That's too long!", message: "Keep it less than 120 characters.", preferredStyle: .alert)
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.barTintColor = UIColor.appPurple
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
 
         
         tableView.delegate = self
         tableView.dataSource = self
+        
+        setupActionControllers()
         
         
         
@@ -109,33 +117,63 @@ class MyTopTensViewController: UIViewController {
         }
     }
 
-
-    
-    @IBAction func addButtonTapped(_ sender: Any) {
-        let setTitleAlert = UIAlertController(title: "What is the name of your new Top Ten List?", message: "", preferredStyle: .alert)
+    func setupActionControllers(){
         
-        setTitleAlert.addTextField(configurationHandler: {(newTextField) in
-            newTextField.text = "Top 10 "
         
-        })
         
-        let saveButton = UIAlertAction(title: "Create", style: .default, handler: {(sender) in
+        setTitleAlert.addTextField(configurationHandler: nil)
         
-            guard let textField = setTitleAlert.textFields?.first, let text = textField.text, text != "", text != "Top Ten "
+        
+        let saveButton = UIAlertAction(title: "Add", style: .default, handler: {(sender) in
+            
+            guard let textField = self.setTitleAlert.textFields?.first, let text = textField.text, text != ""
                 else{ return}
+            
+            if text.characters.count > 120{
+                
+                self.present(self.tooManyCharactersAlert, animated: true, completion: nil)
+                
+                return
+                
+            }
+            
+            
             
             TopTenPostService.create(title: text, completion: {(topTenPost) in
                 guard let topTenPost = topTenPost
                     else{return}
                 self.myTopTens.append(topTenPost)
             })
-        
+            
+            
+            
         })
+        
         
         let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
+        
         setTitleAlert.addAction(saveButton)
         setTitleAlert.addAction(cancelButton)
+        
+        let okButton = UIAlertAction(title: "OK", style: .default, handler: {sender in
+            
+            
+            self.present(self.setTitleAlert, animated: true, completion: nil)
+            
+            
+        })
+        
+        
+        tooManyCharactersAlert.addAction(okButton)
+    }
+
+
+    
+    @IBAction func addButtonTapped(_ sender: Any) {
+        
+        
+        setTitleAlert.textFields?[0].text = "Top 10"
         
         self.present(setTitleAlert, animated: true, completion: nil)
         
@@ -148,27 +186,44 @@ extension MyTopTensViewController : UITableViewDelegate, UITableViewDataSource{
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if myTopTens.count == 0 {
+            return 1
+        }
         return myTopTens.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: "TopTenCell", for: indexPath) as! MyTopTensTableViewCell
-        
-        let currentTopTen = myTopTens[indexPath.row]
-        cell.titleLabel.text = currentTopTen.title
-        
-        if currentTopTen.ownerUID != User.current.uid{
-            cell.dateCreatedLabel.text = "Created by " + currentTopTen.creatorUsername
-
+       
+        if myTopTens.count == 0{
+            let cell = self.tableView.dequeueReusableCell(withIdentifier: "EmptyTableViewCell", for: indexPath)
+            return cell
         }
         else{
-            cell.dateCreatedLabel.text = "Created on " + currentTopTen.dateCreated.toString()
-
+            let cell = self.tableView.dequeueReusableCell(withIdentifier: "TopTenCell", for: indexPath) as! MyTopTensTableViewCell
+            
+            let currentTopTen = myTopTens[indexPath.row]
+            cell.titleLabel.text = currentTopTen.title
+            
+            if currentTopTen.ownerUID != User.current.uid{
+                cell.dateCreatedLabel.text = "Created by " + currentTopTen.creatorUsername
+                
+            }
+            else{
+                cell.dateCreatedLabel.text = "Created on " + currentTopTen.dateCreated.toString()
+                
+            }
+            
+            
+            
+            return cell
         }
         
-        
-        
-        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if myTopTens.count == 0{
+            tableView.deselectRow(at: indexPath, animated: false)
+        }
     }
     
     

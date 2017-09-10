@@ -13,7 +13,13 @@ class DisplayTopTenViewController: UIViewController{
     var rereloaded = false
     var topTenMetadata : TopTenMetadata?
     
+    var xImage = UIImage(named: "XICon.png")?.withRenderingMode(.alwaysTemplate)
+    var checkboxImage = UIImage(named: "icons8-Checkmark-100.png")?.withRenderingMode(.alwaysTemplate)
+    
     @IBOutlet weak var deleteButton: UIButton!
+    @IBOutlet weak var addFriendsButton: UIButton!
+    @IBOutlet weak var seeFriendsListsButtons: UIButton!
+    @IBOutlet weak var addNewButton: UIButton!
     
     let setTitleAlert = UIAlertController(title: "Add something to this top ten list.", message: "", preferredStyle: .alert)
     
@@ -27,6 +33,7 @@ class DisplayTopTenViewController: UIViewController{
             print("top ten post was updated")
         }
     }
+    var topTenCount = 10
     
     
     //@IBOutlet weak var sortSegmentedControl: UISegmentedControl!
@@ -36,7 +43,8 @@ class DisplayTopTenViewController: UIViewController{
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        titleLabel.text = topTenMetadata?.title
+        
+        
        // sortSegmentedControl.tintColor = UIColor.appPurple
         tableView.delegate = self
         tableView.dataSource = self
@@ -51,6 +59,22 @@ class DisplayTopTenViewController: UIViewController{
         
         setupActionControllers()
         
+        deleteButton.setImage(deleteButton.imageView?.image?.withRenderingMode(.alwaysTemplate), for: .normal)
+        deleteButton.setImage(deleteButton.imageView?.image?.withRenderingMode(.alwaysTemplate), for: .highlighted)
+        deleteButton.imageView?.tintColor = .appPurple
+        
+        addFriendsButton.setImage(addFriendsButton.imageView?.image?.withRenderingMode(.alwaysTemplate), for: .normal)
+        addFriendsButton.setImage(addFriendsButton.imageView?.image?.withRenderingMode(.alwaysTemplate), for: .highlighted)
+        addFriendsButton.imageView?.tintColor = .appPurple
+        
+        seeFriendsListsButtons.setImage(seeFriendsListsButtons.imageView?.image?.withRenderingMode(.alwaysTemplate), for: .normal)
+        seeFriendsListsButtons.setImage(seeFriendsListsButtons.imageView?.image?.withRenderingMode(.alwaysTemplate), for: .highlighted)
+        seeFriendsListsButtons.imageView?.tintColor = .appPurple
+        
+        addNewButton.setImage(addNewButton.imageView?.image?.withRenderingMode(.alwaysTemplate), for: .normal)
+        addNewButton.setImage(addNewButton.imageView?.image?.withRenderingMode(.alwaysTemplate), for: .highlighted)
+        addNewButton.imageView?.tintColor = .appPurple
+        
         
 
         // Do any additional setup after loading the view.
@@ -58,13 +82,34 @@ class DisplayTopTenViewController: UIViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()
+        titleLabel.text = topTenMetadata?.title
+        if let topTenMetadata = topTenMetadata{
+            topTenCount = numberOfItemsFromTitle(title: topTenMetadata.title)
+            
+        }
         
     }
     
     func turnOffDeleteMode(){
-        deleteButton.setTitle("Delete", for: .normal)
+        deleteButton.setImage(xImage, for: .normal)
         isEditing = false
         tableView.reloadData()
+    }
+    
+    func numberOfItemsFromTitle(title : String) -> Int{
+        let wordArray = title.toWordArray()
+        if wordArray.count < 2{
+            return 10
+        }
+        else if wordArray[0] != "Top"{
+            return 10
+        }
+        else if let number =  Int(wordArray[1]), number > 0, number <= 500{
+            return number
+        }
+        else{
+            return 10
+        }
     }
     
  
@@ -78,7 +123,7 @@ class DisplayTopTenViewController: UIViewController{
         
         let saveButton = UIAlertAction(title: "Add", style: .default, handler: {(sender) in
             
-            guard let textField = self.setTitleAlert.textFields?.first, let text = textField.text, text != ""
+            guard let textField = self.setTitleAlert.textFields?.first, let text = textField.text, text != "", let topTenPost = self.topTenPost
                 else{ return}
             
             if text.characters.count > 100{
@@ -94,20 +139,16 @@ class DisplayTopTenViewController: UIViewController{
             let newListItem = ListItem(title: text, user: User.current)
             
             //TODO: - If two people create things at the exact same time, they'll have the same position
-            if let count = self.topTenPost?.listItems.count{
-                newListItem.position = count + 1
+            newListItem.position = topTenPost.listItems.count + 1
                 
-            }
-            else{
-                newListItem.position = 1
-                
-            }
-            TopTenPostService.addNewListItem(newListItem, to: self.topTenPost!, completion: {(key) in
+            
+
+            TopTenPostService.addNewListItem(newListItem, to: topTenPost, completion: {(key) in
                 guard let key = key
                     else{return}
                 
                 newListItem.uid = key
-                self.topTenPost?.listItems.append(newListItem)
+                topTenPost.listItems.append(newListItem)
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
@@ -168,12 +209,14 @@ class DisplayTopTenViewController: UIViewController{
         
     }
     @IBAction func deleteButtonTapped(_ sender: Any) {
-        if deleteButton.title(for: .normal) == "Done"{
-            deleteButton.setTitle("Delete", for: .normal)
+        if isEditing{
+            deleteButton.setImage(xImage, for: .normal)
+
 
         }
         else{
-            deleteButton.setTitle("Done", for: .normal)
+            deleteButton.setImage(checkboxImage, for: .normal)
+
 
         }
         isEditing = !isEditing
@@ -269,6 +312,14 @@ extension DisplayTopTenViewController :  UITableViewDelegate, UITableViewDataSou
     }
     
     func colorCellForIndexPath(cell : ListItemTableViewCell,indexPath : IndexPath, totalNumberOfCells : Int){
+        
+        if indexPath.row < topTenCount{
+            cell.numberLabel.textColor = .appPurple
+        }
+        else{
+            cell.numberLabel.textColor = .black
+
+        }
         
 
     }

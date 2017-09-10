@@ -20,18 +20,37 @@ class SeeFriendsTopTensViewController: UIViewController {
             tableView.reloadData()
         }
     }
+    var topTenCount = 10
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.delegate = self
         self.tableView.dataSource = self
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 122.0
+        
 
         // Do any additional setup after loading the view.
     }
     
+    func numberOfItemsFromTitle(title : String) -> Int{
+        let wordArray = title.toWordArray()
+        if wordArray.count < 2{
+            return 10
+        }
+        else if wordArray[0] != "Top"{
+            return 10
+        }
+        else if let number =  Int(wordArray[1]), number > 0, number <= 500{
+            return number
+        }
+        else{
+            return 10
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         titleLabel.text = titleText
+        topTenCount = numberOfItemsFromTitle(title: titleText)
     }
 
     override func didReceiveMemoryWarning() {
@@ -77,10 +96,27 @@ extension SeeFriendsTopTensViewController : UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Top Ten List Cell", for: indexPath) as! ListItemTableViewCell
         let curListItem = listItems[indexPath.row]
+        cell.numberLabel.text = String(curListItem.position)
+        cell.moreIndicatorView.isHidden = curListItem.detailsString == ""
         cell.contentLabel.text = curListItem.title
-        cell.contentLabel.preferredMaxLayoutWidth = cell.contentLabel.frame.size.width - 20;
+        cell.contentLabel.preferredMaxLayoutWidth = cell.contentLabel.frame.size.width - 20
+        colorCellForIndexPath(cell: cell, indexPath: indexPath, totalNumberOfCells: tableView.numberOfRows(inSection: 0))
+
 
         return cell
+        
+    }
+    
+    func colorCellForIndexPath(cell : ListItemTableViewCell,indexPath : IndexPath, totalNumberOfCells : Int){
+        
+        if indexPath.row < topTenCount{
+            cell.numberLabel.textColor = .appPurple
+        }
+        else{
+            cell.numberLabel.textColor = .black
+            
+        }
+        
         
     }
 }

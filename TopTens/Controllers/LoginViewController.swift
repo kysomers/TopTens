@@ -10,6 +10,9 @@ import UIKit
 import FirebaseAuth
 import FirebaseAuthUI
 import FirebaseDatabase
+import FirebaseFacebookAuthUI
+import FirebaseGoogleAuthUI
+import FBSDKLoginKit
 
 typealias FIRUser = FirebaseAuth.User
 
@@ -30,20 +33,66 @@ class LoginViewController: UIViewController {
     
 
     @IBAction func loginButtonTapped(_ sender: Any) {
-        
-        // 1
+        /*
         guard let authUI = FUIAuth.defaultAuthUI()
             else { return }
         
-        // 2
         authUI.delegate = self
         
-        // 3
+        let providers: [FUIAuthProvider] = [FUIGoogleAuth(), FUIFacebookAuth()]
+        authUI.providers = providers
+        
         let authViewController = authUI.authViewController()
         present(authViewController, animated: true)
+ */
         
     }
-    
+    @IBAction func facebookButtonTapped(_ sender: Any) {
+        let fbLoginManager = FBSDKLoginManager()
+        fbLoginManager.logIn(withReadPermissions: ["public_profile", "email"], from: self) { (result, error) in
+            if let error = error {
+                print("Failed to login: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let accessToken = FBSDKAccessToken.current() else {
+                print("Failed to get access token")
+                return
+            }
+            
+            let credential = FacebookAuthProvider.credential(withAccessToken: accessToken.tokenString)
+            
+            // Perform login by calling Firebase APIs
+            Auth.auth().signIn(with: credential, completion: { (user, error) in
+                
+                guard let user = user
+                    else {
+                        self.registerButton.isEnabled = true
+                        return }
+                UserService.show(forUID: user.uid, completion:  { (user) in
+                    if let user = user {
+                        // handle existing user
+                        User.setCurrent(user, writeToUserDefaults: true)
+                        
+                        let initialViewController = UIStoryboard.initialViewController(for: "Main")
+                        self.view.window?.rootViewController = initialViewController
+                        self.view.window?.makeKeyAndVisible()
+                    } else {
+                        // handle new user
+                        self.performSegue(withIdentifier: Constants.Segues.toCreateUsername, sender: self)
+                    }
+                    self.registerButton.isEnabled = true
+                    
+                })
+                
+            })
+            
+        } 
+        
+    }
+   
+    @IBAction func googleButtonTapped(_ sender: Any) {
+    }
     
     /*
     // MARK: - Navigation
@@ -59,32 +108,38 @@ class LoginViewController: UIViewController {
 
 extension LoginViewController : FUIAuthDelegate{
         func authUI(_ authUI: FUIAuth, didSignInWith user: FIRUser?, error: Error?) {
+            registerButton.isEnabled = false
             if let error = error {
-                assertionFailure("Error signing in: \(error.localizedDescription)")
+                registerButton.isEnabled = true
+                //assertionFailure("Error signing in: \(error.localizedDescription)")
                 return
             }
             
             guard let user = user
-                else { return }
+                else {
+                    registerButton.isEnabled = true
+                    return }
             
-            
-            // 2
-            let userRef = Database.database().reference().child(Constants.UserDefaults.key).child(user.uid)
-            
-            // 3
-            userRef.observeSingleEvent(of: .value, with: { (snapshot) in
-                if let user = User(snapshot: snapshot) {
-                    User.setCurrent(user)
-                    
-                    let storyboard = UIStoryboard(name: "Main", bundle: .main)
-                    if let initialViewController = storyboard.instantiateInitialViewController() {
-                        self.view.window?.rootViewController = initialViewController
-                        self.view.window?.makeKeyAndVisible()
-                    }
-                } else {
-                    self.performSegue(withIdentifier: Constants.Segues.toCreateUsername, sender: self)
-                }
-            })
+//            
+//            // 2
+//            let userRef = Database.database().reference().child(Constants.UserDefaults.key).child(user.uid)
+//            
+//            // 3
+//            userRef.observeSingleEvent(of: .value, with: { (snapshot) in
+//                if let user = User(snapshot: snapshot) {
+//                    User.setCurrent(user)
+//                    
+//                    let storyboard = UIStoryboard(name: "Main", bundle: .main)
+//                    if let initialViewController = storyboard.instantiateInitialViewController() {
+//                        self.view.window?.rootViewController = initialViewController
+//                        self.view.window?.makeKeyAndVisible()
+//                    }
+//                } else {
+//                    self.performSegue(withIdentifier: Constants.Segues.toCreateUsername, sender: self)
+//                }
+//                self.registerButton.isEnabled = true
+//
+//            })
             
             
             
@@ -100,6 +155,8 @@ extension LoginViewController : FUIAuthDelegate{
                     // handle new user
                     self.performSegue(withIdentifier: Constants.Segues.toCreateUsername, sender: self)
                 }
+                self.registerButton.isEnabled = true
+
             }
             
         }
@@ -109,14 +166,4 @@ extension LoginViewController : FUIAuthDelegate{
     
 }
 
-extension UIStoryboard{
-    static func initialViewController(for storyboardName:String) -> UIViewController{
-        let storyboard = UIStoryboard(name: storyboardName, bundle: .main)
-        if let initialViewController = storyboard.instantiateInitialViewController(){
-            return initialViewController
-        }
-        else{
-            return UIViewController()
-        }
-    }
-}
+

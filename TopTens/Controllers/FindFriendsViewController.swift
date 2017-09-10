@@ -28,12 +28,20 @@ class FindFriendsViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
+        navigationController?.navigationBar.barTintColor = UIColor.appPurple
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        
         searchBar.returnKeyType = .done
         searchBar.enablesReturnKeyAutomatically = false
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateTableView), name: NSNotification.Name(rawValue: Constants.Notifications.refreshedSocialArray), object: nil)
 
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        UserService.refreshSocialArraysForCurrentUser()
     }
 
     override func didReceiveMemoryWarning() {
@@ -53,6 +61,7 @@ extension FindFriendsViewController : UISearchBarDelegate{
             isShowingFriends = true
             displayedStrangers = User.current.friends
             tableView.reloadData()
+            UserService.refreshSocialArraysForCurrentUser()
             return
         }
 
