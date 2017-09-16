@@ -39,9 +39,10 @@ class ValidationEmailViewController: UIViewController {
     }
     @IBAction func doneButtonTapped(_ sender: Any) {
         //TODO: - need to temporarily disable buttons
+        doneButton.isEnabled = false
         guard let user = user, let password = password, let email = user.email else{return}
         Auth.auth().signIn(withEmail: email, password: password, completion: {(user, error) in
-            guard let user = user else {return}
+            guard let user = user else {self.doneButton.isEnabled = true; return}
             if user.isEmailVerified{
                 self.performSegue(withIdentifier: "toCreateUsername", sender: self)
             }
@@ -49,7 +50,7 @@ class ValidationEmailViewController: UIViewController {
                 self.alertController.title = "Your email hasn't been verified yet."
                 self.alertController.message = "If you went to your email and clicked the link, give it another couple seconds. It might be a slow connection. Otherwise, you can have the verification email resent."
                 self.present(self.alertController, animated: true, completion: nil)
-                print("SHOW ALERT THAT The email still hasn't been verified")
+                self.doneButton.isEnabled = true
             }
             
         })

@@ -16,9 +16,11 @@ class SeeFriendsTopTensViewController: UIViewController {
     var listItems = [ListItem]()
     var topTenPost : TopTenPost?{
         didSet{
-            
+            guard let topTenPost = topTenPost else{return}
+            topTenPost.listItems = topTenPost.listItems.sorted(by: {$0.position < $1.position})
             tableView.reloadData()
         }
+        
     }
     var topTenCount = 10
     override func viewDidLoad() {
@@ -78,10 +80,17 @@ class SeeFriendsTopTensViewController: UIViewController {
 extension SeeFriendsTopTensViewController : UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let topTenPost = topTenPost else{return 0}
+        
         listItems = topTenPost.listItems
+        if listItems.count > topTenCount{
+            return topTenCount
+        }
+        else{
+            return listItems.count
+
+        }
             
         
-        return listItems.count
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

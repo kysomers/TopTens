@@ -19,7 +19,6 @@ final class User : NSObject {
     static var current: User {
         // 3
         guard let currentUser = _current else {
-            //TODO: - This makes the app crash when a new user finishes registering. Yikes.
             fatalError("Error: current user doesn't exist")
         }
         

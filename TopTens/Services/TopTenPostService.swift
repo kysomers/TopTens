@@ -133,7 +133,6 @@ struct TopTenPostService{
         }
         var dictToWrite : [String : Any] = [:]
         dictToWrite["\(Constants.TopTenPost.key)/\(metadata.uid)/\(User.current.uid)"] = newDictionary
-       // dictToWrite["\(Constants.TopTenShared.key)/\(metadata.uid)"]
         let ref = Database.database().reference()
         ref.updateChildValues(dictToWrite, withCompletionBlock: {(error, ref) in
             if error != nil{
@@ -148,6 +147,8 @@ struct TopTenPostService{
         var dictToWrite : [String : Any] = [:]
         
         //Deletion stuff
+        deletedlistItem.deleted = true
+        
         let topTenPostPath = [Constants.TopTenPost.key, metadata.uid, User.current.uid, deletedlistItem.uid].toPath()
         let topTenSharedDeletedPath = [Constants.TopTenShared.key, metadata.uid, deletedlistItem.uid, Constants.TopTenShared.deleted].toPath()
         print(topTenPostPath)
@@ -179,29 +180,64 @@ struct TopTenPostService{
         
     }
     
-    static func updateSingleListItemUniversally(listItem : ListItem, metadata : TopTenMetadata, success : @escaping (Bool) -> Void){
+    static func checkIfListItemWasDeleted(listItem : ListItem, metadata : TopTenMetadata, result : @escaping (DeletedResult) -> Void){
+        guard let listItemUid = listItem.uid else {return}
+        let ref = Database.database().reference().child(Constants.TopTenShared.key).child(metadata.uid).child(listItemUid).child(Constants.TopTenShared.deleted)
         
-        //TODO: Make sure the item isn't deleted before updating it on toptenshared
-        var dictToWrite : [String : Any] = [:]
-        guard let listItemUid = listItem.uid,
-            listItemUid != ""
-            else {print("This list item doesn't have a UID") ; return}
-        let topTenPostPath = [Constants.TopTenPost.key, metadata.uid, User.current.uid, listItemUid].toPath()
-        let topTenSharedPath = [Constants.TopTenShared.key, metadata.uid, listItemUid].toPath()
-        dictToWrite[topTenPostPath] = listItem.toDictionary()
-        dictToWrite[topTenSharedPath] = listItem.toDictionaryForShared()
-        
-        let ref = Database.database().reference()
-        ref.updateChildValues(dictToWrite, withCompletionBlock: {(error, ref) in
-            if error != nil{
-                print("There was an error updating the list item")
-                success(false)
+        ref.observeSingleEvent(of: .value, with: {snapshot in
+            print(snapshot.value)
+            guard let isDeleted =  snapshot.value as? Bool else{result(.error); return}
+            if isDeleted{
+                result(.deleted)
             }
             else{
-                success(true)
+                result(.notDeleted)
+            }
+            
+            
+        })
+    }
+    
+    static func updateSingleListItemUniversally(listItem : ListItem, metadata : TopTenMetadata, success : @escaping (Bool) -> Void){
+        
+        checkIfListItemWasDeleted(listItem: listItem, metadata: metadata, result: {deletedStatus in
+        
+            if deletedStatus == .error{
+                success(false)
+            }
+            else if deletedStatus == .notDeleted{
+                var dictToWrite : [String : Any] = [:]
+                guard let listItemUid = listItem.uid,
+                    listItemUid != ""
+                    else {print("This list item doesn't have a UID") ; return}
+                
+                
+                
+                
+                let topTenPostPath = [Constants.TopTenPost.key, metadata.uid, User.current.uid, listItemUid].toPath()
+                let topTenSharedPath = [Constants.TopTenShared.key, metadata.uid, listItemUid].toPath()
+                dictToWrite[topTenPostPath] = listItem.toDictionary()
+                dictToWrite[topTenSharedPath] = listItem.toDictionaryForShared()
+                
+                let ref = Database.database().reference()
+                ref.updateChildValues(dictToWrite, withCompletionBlock: {(error, ref) in
+                    if error != nil{
+                        print("There was an error updating the list item")
+                        success(false)
+                    }
+                    else{
+                        success(true)
+                    }
+                    
+                })
+            }
+            else{
+                //TODO: -  V2 Have the item be deleted from the user's stuff if they tried to mess with an item that was deleted
             }
         
         })
+        
+        
     }
     
     static func fetchListItemsAndUIDsForUser(user: User, from metadata : TopTenMetadata, completion : @escaping ([ListItem]) -> Void){

@@ -138,7 +138,7 @@ class DisplayTopTenViewController: UIViewController{
             
             let newListItem = ListItem(title: text, user: User.current)
             
-            //TODO: - If two people create things at the exact same time, they'll have the same position
+            //TODO: - V2 If two people create things at the exact same time, they'll have the same position
             newListItem.position = topTenPost.listItems.count + 1
                 
             
@@ -254,10 +254,9 @@ extension DisplayTopTenViewController :  UITableViewDelegate, UITableViewDataSou
             let listItemToDelete = topTenPost.listItems[indexPath.row]
             var listItemsToUpdate = [ListItem]()
             for index in indexPath.row + 1 ..< topTenPost.listItems.count{
-                //TODO: Make an array called listItemsToDisplay, since this is going to change the actual list items before
-                //the callback when you'll be sure that you want them changed
+                //TODO V2: Make an array called listItemsToDisplay, since this is going to change the actual list items before
+                //the callback when you'll be sure that you want them changed. This causes errors when connection is lost
                 let curListItem = topTenPost.listItems[index]
-                curListItem.position -= 1
                 listItemsToUpdate.append(curListItem)
             }
             

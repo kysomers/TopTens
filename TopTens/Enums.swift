@@ -92,3 +92,7 @@ struct Constants{
 enum VotingType : String{
     case choose, vote
 }
+
+enum DeletedResult : String{
+    case deleted, error, notDeleted
+}

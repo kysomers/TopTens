@@ -112,7 +112,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pYU-wQ-utg">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="424.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="474.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign In With Email" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ugb-rP-s9i">
                                                 <rect key="frame" x="20" y="60" width="335" height="33.5"/>
@@ -165,7 +165,7 @@
                                                     <color key="titleColor" red="0.56078431370000004" green="0.32549019610000002" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <connections>
-                                                    <segue destination="OIr-1o-IHQ" kind="modal" id="eLe-oM-C6Y"/>
+                                                    <segue destination="OIr-1o-IHQ" kind="presentation" id="eLe-oM-C6Y"/>
                                                 </connections>
                                             </button>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="ZDA-wV-532">
@@ -192,6 +192,15 @@
                                                     <constraint firstAttribute="trailing" secondItem="6I1-Hu-nl1" secondAttribute="trailing" id="etH-4o-3JK"/>
                                                 </constraints>
                                             </stackView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lxG-Ja-K1c">
+                                                <rect key="frame" x="130" y="424.5" width="115" height="30"/>
+                                                <state key="normal" title="Forgot Password">
+                                                    <color key="titleColor" red="0.56252020597457886" green="0.32370349764823914" blue="0.99907666444778442" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="forgotPasswordTapped:" destination="oU4-o4-vVS" eventType="touchUpInside" id="SEo-qc-9nM"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -203,9 +212,11 @@
                                             <constraint firstItem="ZDA-wV-532" firstAttribute="leading" secondItem="yGb-yN-xxs" secondAttribute="leading" id="HOg-UW-rvD"/>
                                             <constraint firstItem="yGb-yN-xxs" firstAttribute="leading" secondItem="pYU-wQ-utg" secondAttribute="leading" constant="40" id="Oou-zG-BPr"/>
                                             <constraint firstItem="ZDA-wV-532" firstAttribute="top" secondItem="yGb-yN-xxs" secondAttribute="bottom" constant="30" id="RZE-se-MAY"/>
+                                            <constraint firstItem="lxG-Ja-K1c" firstAttribute="centerX" secondItem="pYU-wQ-utg" secondAttribute="centerX" id="WKH-02-Viz"/>
+                                            <constraint firstItem="lxG-Ja-K1c" firstAttribute="top" secondItem="Uni-LS-xCQ" secondAttribute="bottom" constant="20" id="bg3-4Z-0bG"/>
+                                            <constraint firstAttribute="bottom" secondItem="lxG-Ja-K1c" secondAttribute="bottom" constant="20" id="ddB-ow-ftO"/>
                                             <constraint firstItem="ugb-rP-s9i" firstAttribute="top" secondItem="pYU-wQ-utg" secondAttribute="top" constant="60" id="hlO-x9-cH5"/>
                                             <constraint firstAttribute="trailing" secondItem="yGb-yN-xxs" secondAttribute="trailing" constant="40" id="i9Z-w9-BCV"/>
-                                            <constraint firstAttribute="bottom" secondItem="Uni-LS-xCQ" secondAttribute="bottom" constant="20" id="jPj-av-Hhd"/>
                                             <constraint firstAttribute="trailing" secondItem="ugb-rP-s9i" secondAttribute="trailing" constant="20" id="jYP-Gd-KIf"/>
                                             <constraint firstItem="ZDA-wV-532" firstAttribute="trailing" secondItem="yGb-yN-xxs" secondAttribute="trailing" id="rX7-0n-Vj2"/>
                                             <constraint firstItem="3I5-Yt-7WA" firstAttribute="top" secondItem="ZDA-wV-532" secondAttribute="bottom" constant="40" id="sIY-On-Lir"/>
@@ -472,14 +483,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GRE-Jo-MPT">
-                                <rect key="frame" x="20" y="60" width="339" height="107.5"/>
+                                <rect key="frame" x="20" y="104" width="339" height="107.5"/>
                                 <string key="text">A confirmation email has been sent to person@email.com. You probably know the drill: go to your email, do what it says, and come back here so you can pick a username and get started making lists.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="emC-G4-yvw">
-                                <rect key="frame" x="97" y="217.5" width="180" height="50"/>
+                                <rect key="frame" x="97" y="261.5" width="180" height="50"/>
                                 <color key="backgroundColor" red="0.56078431370000004" green="0.32549019610000002" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="180" id="ZH3-pZ-loF"/>
@@ -493,7 +504,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zd1-sX-8un">
-                                <rect key="frame" x="106" y="327.5" width="163" height="30"/>
+                                <rect key="frame" x="106" y="371.5" width="163" height="30"/>
                                 <state key="normal" title="Resend Validation Email">
                                     <color key="titleColor" red="0.56078431370000004" green="0.32549019610000002" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -663,7 +674,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="WEF-Ag-dUY"/>
-        <segue reference="fKa-Lw-c1v"/>
+        <segue reference="NnO-5W-PnF"/>
+        <segue reference="wuP-PT-IGv"/>
     </inferredMetricsTieBreakers>
 </document>

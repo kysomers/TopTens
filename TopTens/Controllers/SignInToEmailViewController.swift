@@ -40,6 +40,29 @@ class SignInToEmailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func forgotPasswordTapped(_ sender: Any) {
+        
+        if let emailText = emailTextField.text, emailText != ""{
+            Auth.auth().sendPasswordReset(withEmail: emailText) { error in
+                if error != nil{
+                    self.alertController.title = "Error sending password reset email."
+                    self.alertController.message = "Make sure your email is entered into the field above and that you have a connection to the internet."
+                    self.present(self.alertController, animated: true, completion: nil)
+                }
+                else{
+                    self.alertController.title = "An email to reset your password was sent to \(emailText)."
+                    self.alertController.message = ""
+                    self.present(self.alertController, animated: true, completion: nil)
+                }
+            }
+        }
+        else{
+            self.alertController.title = "Enter your email"
+            self.alertController.message = "Enter your email in the field above in order to receive an email to reset your password."
+            self.present(self.alertController, animated: true, completion: nil)
+        }
+        
+    }
     @IBAction func signInTapped(_ sender: Any) {
         takeDownTheKeyboard(self)
         
@@ -56,7 +79,6 @@ class SignInToEmailViewController: UIViewController {
                 self.alertController.title = "Login Error"
                 self.alertController.message = "Make sure you have the right password and that you are connected to the internet."
                 self.present(self.alertController, animated: true, completion: nil)
-                //TODO show an error
                 
                 
             }

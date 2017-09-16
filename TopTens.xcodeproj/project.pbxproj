@@ -29,7 +29,6 @@
 		8392E8591F240433003486F8 /* TopTenMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8392E8581F240433003486F8 /* TopTenMetadata.swift */; };
 		8392E85B1F264741003486F8 /* DisplayTopTenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8392E85A1F264741003486F8 /* DisplayTopTenViewController.swift */; };
 		8392E8991F2A36E0003486F8 /* ListItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8392E8981F2A36E0003486F8 /* ListItemTableViewCell.swift */; };
-		8392E89B1F2A3EA0003486F8 /* EditListItemFooterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8392E89A1F2A3EA0003486F8 /* EditListItemFooterTableViewCell.swift */; };
 		839E08B21F340A6000F914EC /* icons8-Friends-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 839E08AF1F340A6000F914EC /* icons8-Friends-100.png */; };
 		839E08D41F38B55800F914EC /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E08D31F38B55800F914EC /* ProfileViewController.swift */; };
 		839E08D61F38BC6F00F914EC /* FindFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E08D51F38BC6F00F914EC /* FindFriendsViewController.swift */; };
@@ -76,7 +75,6 @@
 		8392E8581F240433003486F8 /* TopTenMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TopTenMetadata.swift; path = Model/TopTenMetadata.swift; sourceTree = "<group>"; };
 		8392E85A1F264741003486F8 /* DisplayTopTenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DisplayTopTenViewController.swift; path = Controllers/DisplayTopTenViewController.swift; sourceTree = "<group>"; };
 		8392E8981F2A36E0003486F8 /* ListItemTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListItemTableViewCell.swift; path = Views/ListItemTableViewCell.swift; sourceTree = "<group>"; };
-		8392E89A1F2A3EA0003486F8 /* EditListItemFooterTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditListItemFooterTableViewCell.swift; path = Views/EditListItemFooterTableViewCell.swift; sourceTree = "<group>"; };
 		839E08AF1F340A6000F914EC /* icons8-Friends-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-Friends-100.png"; sourceTree = "<group>"; };
 		839E08D31F38B55800F914EC /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileViewController.swift; path = Controllers/ProfileViewController.swift; sourceTree = "<group>"; };
 		839E08D51F38BC6F00F914EC /* FindFriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FindFriendsViewController.swift; path = Controllers/FindFriendsViewController.swift; sourceTree = "<group>"; };
@@ -90,6 +88,7 @@
 		83C1E0DF1F43B07B00F098F3 /* AddFriendsToTopTenTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFriendsToTopTenTableViewController.swift; sourceTree = "<group>"; };
 		83C1E0E11F43B0BE00F098F3 /* SeeFriendsTopTenTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SeeFriendsTopTenTableViewController.swift; path = Controllers/SeeFriendsTopTenTableViewController.swift; sourceTree = "<group>"; };
 		83C1E0E31F465AB300F098F3 /* icons8-Checkmark-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-Checkmark-100.png"; sourceTree = "<group>"; };
+		83CFA4EB1F69F82300EF2020 /* TopTens.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TopTens.entitlements; sourceTree = "<group>"; };
 		83F008631F1C71D2004CA0E6 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = Controllers/LoginViewController.swift; sourceTree = "<group>"; };
 		83F008651F1D6FCB004CA0E6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		83F008671F1D9C8B004CA0E6 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = User.swift; path = Model/User.swift; sourceTree = "<group>"; };
@@ -141,6 +140,7 @@
 		832411841F19B009008EC8B8 /* TopTens */ = {
 			isa = PBXGroup;
 			children = (
+				83CFA4EB1F69F82300EF2020 /* TopTens.entitlements */,
 				832411851F19B009008EC8B8 /* AppDelegate.swift */,
 				832411991F1AE215008EC8B8 /* Controllers */,
 				8324119E1F1AE249008EC8B8 /* Helpers+Extensions */,
@@ -258,7 +258,6 @@
 			children = (
 				833B7EA91F2143FF00D1AD2B /* MyTopTensTableViewCell.swift */,
 				8392E8981F2A36E0003486F8 /* ListItemTableViewCell.swift */,
-				8392E89A1F2A3EA0003486F8 /* EditListItemFooterTableViewCell.swift */,
 			);
 			name = TopTenCells;
 			sourceTree = "<group>";
@@ -327,6 +326,11 @@
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = Z9UKN24YH9;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -428,7 +432,6 @@
 				8317DD581F58DD9D00EEEF71 /* NewAccountViewController.swift in Sources */,
 				8392E8991F2A36E0003486F8 /* ListItemTableViewCell.swift in Sources */,
 				8392E85B1F264741003486F8 /* DisplayTopTenViewController.swift in Sources */,
-				8392E89B1F2A3EA0003486F8 /* EditListItemFooterTableViewCell.swift in Sources */,
 				83F008641F1C71D2004CA0E6 /* LoginViewController.swift in Sources */,
 				839E08DD1F3A0B9F00F914EC /* StrangerTableViewCell.swift in Sources */,
 				83C1E0E01F43B07B00F098F3 /* AddFriendsToTopTenTableViewController.swift in Sources */,
@@ -480,9 +483,11 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Kyle Somers (JH7363M84Z)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = Z9UKN24YH9;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -502,6 +507,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -530,9 +536,11 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Kyle Somers (JH7363M84Z)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = Z9UKN24YH9;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -545,6 +553,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
@@ -556,11 +565,16 @@
 			baseConfigurationReference = 5AB51DE09595AE7A6A2E16C9 /* Pods-TopTens.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TopTens/TopTens.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = Z9UKN24YH9;
 				INFOPLIST_FILE = "$(SRCROOT)/TopTens/Supporting/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.KyleSomers.TopTens;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kylesomers.toptens;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -570,11 +584,16 @@
 			baseConfigurationReference = 5A9B4FA1D0348BA09B83D43D /* Pods-TopTens.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TopTens/TopTens.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = Z9UKN24YH9;
 				INFOPLIST_FILE = "$(SRCROOT)/TopTens/Supporting/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.KyleSomers.TopTens;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kylesomers.toptens;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

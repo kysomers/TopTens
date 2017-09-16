@@ -17,6 +17,7 @@ class FindFriendsViewController: UIViewController {
     var friends = [User]()
     var receivedRequests = [User]()
     var isShowingFriends = true
+    var hasLoadedAllMatches = false
 
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
@@ -56,7 +57,7 @@ extension FindFriendsViewController : UISearchBarDelegate{
     
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
+        hasLoadedAllMatches = false
         if searchText == ""{
             isShowingFriends = true
             displayedStrangers = User.current.friends
@@ -69,7 +70,7 @@ extension FindFriendsViewController : UISearchBarDelegate{
         let lowercaseSearchText = searchText.lowercased()
         
         FriendService.findUsersWithUsernamesStartingWith(lowercaseSearchText: lowercaseSearchText, completion: {(users) in
-        
+            self.hasLoadedAllMatches = true
             if let users = users{
                 self.displayedStrangers = users
                 
@@ -123,6 +124,9 @@ extension FindFriendsViewController : UITableViewDelegate, UITableViewDataSource
                 }
             }
         }
+        else if hasLoadedAllMatches && displayedStrangers.count == 0{
+            return 1
+        }
         else{
             return displayedStrangers.count
 
@@ -136,6 +140,7 @@ extension FindFriendsViewController : UITableViewDelegate, UITableViewDataSource
             if indexPath.section == 0 && receivedRequests.count > 0{
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constants.CellIdentifiers.pendingCell, for: indexPath) as! PendingFriendTableViewCell
                 cell.nameLabel.text = receivedRequests[indexPath.row].fullName
+                cell.usernameLabel.text = receivedRequests[indexPath.row].stylizedUsername
                 cell.tableViewUpdater = self
                 cell.user = receivedRequests[indexPath.row]
                 cell.selectionStyle = .none
@@ -159,6 +164,12 @@ extension FindFriendsViewController : UITableViewDelegate, UITableViewDataSource
                 
                 
             }
+        }
+        else if hasLoadedAllMatches && displayedStrangers.count == 0{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "NoMatchesCell", for: indexPath)
+            return cell
+            
+        
         }
         else{
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.CellIdentifiers.strangerCell, for: indexPath) as! StrangerTableViewCell

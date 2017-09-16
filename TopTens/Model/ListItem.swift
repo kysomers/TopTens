@@ -20,7 +20,6 @@ class ListItem{
     var deleted : Bool = false
 
     
-    //TODO: - Fix this shit (great comment, Past Kyle. Fix what?)
     init(title : String, user : User) {
         self.title = title
         self.position = 0

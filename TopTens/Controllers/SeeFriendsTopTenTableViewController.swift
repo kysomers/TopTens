@@ -30,6 +30,8 @@ class SeeFriendsTopTenTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
 
     // MARK: - Table view data source
 
@@ -53,7 +55,7 @@ class SeeFriendsTopTenTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if let topTenPost = topTenPost, usersForPostThatArentMe.count > 0{
+        if let _ = topTenPost, usersForPostThatArentMe.count > 0{
             let cell = tableView.dequeueReusableCell(withIdentifier: "otherListDudeCell", for: indexPath) as! FriendTableViewCell
             let currentUser = usersForPostThatArentMe[indexPath.row]
             

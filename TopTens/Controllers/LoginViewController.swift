@@ -109,7 +109,7 @@ class LoginViewController: UIViewController {
 extension LoginViewController : FUIAuthDelegate{
         func authUI(_ authUI: FUIAuth, didSignInWith user: FIRUser?, error: Error?) {
             registerButton.isEnabled = false
-            if let error = error {
+            if let _ = error {
                 registerButton.isEnabled = true
                 //assertionFailure("Error signing in: \(error.localizedDescription)")
                 return

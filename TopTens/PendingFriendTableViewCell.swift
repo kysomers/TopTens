@@ -15,11 +15,21 @@ class PendingFriendTableViewCell: UITableViewCell {
     var declineRequestButtonTapped = false
     var tableViewUpdater : UpdateTableViewDelegate?
 
+    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet weak var nopeButton: UIButton!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        let checkImage = UIImage(named: "icons8-Checkmark-100.png")?.withRenderingMode(.alwaysTemplate)
+        yesButton.setImage(checkImage, for: .normal)
+        
+        let xImage = UIImage(named: "XICon.png")?.withRenderingMode(.alwaysTemplate)
+        nopeButton.setImage(xImage, for: .normal)
+        
+        self.tintColor = .white
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -36,7 +46,8 @@ class PendingFriendTableViewCell: UITableViewCell {
         acceptRequestButtonTapped = true
         FriendService.confirmFriend(addedFriend: user, succeeded: {didSucceed in
             if didSucceed{
-                User.current.friends.append(user)
+                //took this out because they were doubling up
+                //User.current.friends.append(user)
                 if let userIndex = User.current.receivedRequests.index(of: user){
                     User.current.receivedRequests.remove(at: userIndex)
                 }
